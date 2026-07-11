@@ -1,6 +1,66 @@
-function loadCard() {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Korean Flashcards PWA</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 20px; }
+        .card { background: #fff3cd; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 400px; margin: 20px auto; transition: background-color 0.3s ease; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .hint-btn { background: #28a745; }
+        .hint-btn:hover { background: #218838; }
+        .input-quiz { padding: 10px; width: 80%; max-width: 300px; font-size: 16px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        .hint-text { color: #6c757d; font-style: italic; margin-top: 10px; display: none; }
+        iframe { width: 100%; max-width: 360px; height: 200px; border-radius: 8px; border: none; margin-top: 15px; }
+        .hover-audio { display: inline-block; cursor: pointer; border-bottom: 2px dashed #007bff; padding-bottom: 2px; }
+    </style>
+</head>
+<body>
+
+    <h1>🇰🇷 Daily Korean Practice</h1>
+    <div id="streak-tracker">Streak: 1 Day 🔥</div>
+
+    <!-- Flashcard Display Area -->
+    <div class="card">
+        <h2 id="word-display" class="hover-audio" onmouseenter="speak('ko')" title="Hover for Korean audio">Loading...</h2>
+        <br><br>
+        <button onclick="speak('ko')">🔊 Listen (KR)</button>
+        <button onclick="speak('en')">🔊 Listen (EN)</button>
+        <div id="video-container"></div>
+    </div>
+
+    <!-- Quiz Area -->
+    <div class="card">
+        <h3>Practice Quiz</h3>
+        <div id="typing-section">
+            <input type="text" id="typing-input" class="input-quiz" placeholder="Type English translation...">
+            <br>
+            <button onclick="checkTyping()">Submit Answer</button>
+            <button onclick="toggleHint()" class="hint-btn">💡 Show Hint</button>
+        </div>
+        <p id="hint-display" class="hint-text"></p>
+        <p id="quiz-feedback" class="hover-audio" onmouseenter="speak('en')" style="font-weight: bold; font-size: 18px; margin-top: 15px;"></p>
+    </div>
+
+    <script>
+        let flashcards = [];
+        let currentIndex = 0;
+
+        // Fetch the vocabulary set from your Refund.json file
+        fetch('Refund.json')
+            .then(res => res.json())
+            .then(data => {
+                flashcards = data;
+                loadCard();
+            }).catch(err => console.error("Error loading JSON:", err));
+
+        function loadCard() {
             if (!flashcards.length) return;
             const card = flashcards[currentIndex];
+            
+            // 1. Reset values and feedback layout
             document.getElementById('word-display').innerText = card.korean;
             document.getElementById('quiz-feedback').innerText = "";
             document.getElementById('quiz-feedback').style.borderBottom = "none";
@@ -10,11 +70,64 @@ function loadCard() {
             hintDisplay.innerText = card.hint ? `Hint: ${card.hint}` : "No hint available.";
             hintDisplay.style.display = "none"; 
 
-            // CHANGED: Render an image tag instead of a YouTube iframe
+            // 2. Dynamic Card Background Color Changer based on Level setting
+            const cardElements = document.querySelectorAll('.card');
+            let bgColor = "#fff3cd"; // Default: Yellow
+
+            if (card.level === "difficult") {
+                bgColor = "#ffe3e3"; // Pink for high difficulty levels
+            } else if (card.level === "beginner") {
+                bgColor = "#ffffff"; // White for beginner difficulty levels
+            }
+            cardElements.forEach(el => el.style.backgroundColor = bgColor);
+
+            // 3. Handle both Remote Images and YouTube Iframe Links dynamically
             const mediaContainer = document.getElementById('video-container');
             if (card.image) {
                 mediaContainer.innerHTML = `<img src="${card.image}" alt="Flashcard Image" style="width: 100%; max-width: 360px; height: auto; border-radius: 8px; margin-top: 15px;">`;
+            } else if (card.youtubeId) {
+                mediaContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${card.youtubeId}" allowfullscreen></iframe>`;
             } else {
                 mediaContainer.innerHTML = "";
             }
         }
+
+        function toggleHint() {
+            const hintDisplay = document.getElementById('hint-display');
+            hintDisplay.style.display = hintDisplay.style.display === "none" ? "block" : "none";
+        }
+
+        // Native Browser Text-to-Speech Engine
+        function speak(lang) {
+            if (!flashcards.length) return;
+            window.speechSynthesis.cancel(); // Stop playing previous tracks
+            
+            const card = flashcards[currentIndex];
+            const text = lang === 'ko' ? card.korean : card.english;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang === 'ko' ? 'ko-KR' : 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function checkTyping() {
+            const input = document.getElementById('typing-input').value.trim().toLowerCase();
+            const correct = flashcards[currentIndex].english.toLowerCase();
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (input === correct) {
+                feedback.innerHTML = `<span style='color: green;'>✅ Correct! (${flashcards[currentIndex].english})</span>`;
+                feedback.style.borderBottom = "2px dashed #28a745"; // Add green hover underline rule for audio reveal
+                setTimeout(nextCard, 2500);
+            } else {
+                feedback.innerHTML = "<span style='color: red;'>❌ Try again!</span>";
+                feedback.style.borderBottom = "none";
+            }
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            loadCard();
+        }
+    </script>
+</body>
+</html>
