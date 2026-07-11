@@ -1,0 +1,20 @@
+function loadCard() {
+            if (!flashcards.length) return;
+            const card = flashcards[currentIndex];
+            document.getElementById('word-display').innerText = card.korean;
+            document.getElementById('quiz-feedback').innerText = "";
+            document.getElementById('quiz-feedback').style.borderBottom = "none";
+            document.getElementById('typing-input').value = "";
+            
+            const hintDisplay = document.getElementById('hint-display');
+            hintDisplay.innerText = card.hint ? `Hint: ${card.hint}` : "No hint available.";
+            hintDisplay.style.display = "none"; 
+
+            // CHANGED: Render an image tag instead of a YouTube iframe
+            const mediaContainer = document.getElementById('video-container');
+            if (card.image) {
+                mediaContainer.innerHTML = `<img src="${card.image}" alt="Flashcard Image" style="width: 100%; max-width: 360px; height: auto; border-radius: 8px; margin-top: 15px;">`;
+            } else {
+                mediaContainer.innerHTML = "";
+            }
+        }
