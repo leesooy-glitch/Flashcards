@@ -4,69 +4,79 @@
     "korean": "환불",
     "english": "refund",
     "hint": "one of the reasons for 환불 is 문제가 있어요",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "difficult"
   },
   {
     "id": 2,
     "korean": "이염",
     "english": "color bleeding",
     "hint": "When the dye from your clothes runs and stains other fabrics",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "difficult"
   },
   {
     "id": 3,
     "korean": "청바지",
     "english": "jeans",
     "hint": "The specific type of denim pants that are bleeding color",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "beginner"
   },
   {
     "id": 4,
     "korean": "세탁",
     "english": "laundry",
     "hint": "The process of washing clothes where the bleeding usually happens",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "normal"
   },
   {
     "id": 5,
     "korean": "품질",
     "english": "quality",
     "hint": "You ask for a refund because the product's quality is defective",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "normal"
   },
   {
     "id": 6,
     "korean": "불량",
     "english": "defective",
     "hint": "An adjective describing an item that has a fault or factory defect",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "difficult"
   },
   {
     "id": 7,
     "korean": "영수증",
     "english": "receipt",
     "hint": "The proof of purchase required by the store clerk to process a refund",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "normal"
   },
   {
     "id": 8,
     "korean": "고객 센터",
     "english": "customer service",
     "hint": "The department or desk in the store where you request refunds",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "beginner"
   },
   {
     "id": 9,
     "korean": "교환",
     "english": "exchange",
     "hint": "The alternative option to a refund if you just want a different pair",
-    "youtubeId": "jym2GKW9JV0"
+    "youtubeId": "jym2GKW9JV0",
+    "level": "normal"
   },
   {
     "id": 10,
     "korean": "물 빠짐",
     "english": "color fading",
     "hint": "The loss of color intensity from the denim during washing",
-    "image": "https://foodrecipe.co.kr/wp-content/uploads/2026/06/prevent-jeans-dye-bleeding-first-wash2.jpg"
+    "image": "https://foodrecipe.co.kr/wp-content/uploads/2026/06/prevent-jeans-dye-bleeding-first-wash2.jpg",
+    "level": "difficult"
   }
 ]
